@@ -16,4 +16,4 @@ def compute_query_cosine_similarities(query):
 def get_k_recommendations(query, k):
     sims = compute_query_cosine_similarities(query)
     indices = np.argsort(sims)[::-1][:k]
-    return docs[indices]
+    return [docs[idx] for idx in indices]
