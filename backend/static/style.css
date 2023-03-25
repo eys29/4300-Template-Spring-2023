@@ -1,3 +1,5 @@
+/* @colorfood- = #ac9200 */
+
 .full-body-container{
     position: absolute;
     top:0;
@@ -14,6 +16,12 @@
 
 #google-c{
     color:#4285F4;
+}
+
+#main-heading{
+    color:#e8ff54;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size:5rem;
 }
 
 #google-s{
@@ -46,6 +54,20 @@
 .google-colors h1{
     margin-bottom: 0;
     margin-right: 3px;
+}
+
+button{
+    border-radius: 50px;
+    border:1px solid black;
+    /* color: #0F9D58; */
+    /* fill: #0F9D58; */
+    /* display: flex; */
+    /* align-items: center; */
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+    padding:12px;
+    width: 300px;
 }
 
 .input-box{
@@ -90,11 +112,17 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+
+
+
+/* w3 schools drop down */
 /* Dropdown Button */
 .dropbtn {
     background-color: #04AA6D;
     color: white;
-    padding: 16px;
+    /* padding: 16px; */
+    width: 50px;
+    height: 30px;
     font-size: 16px;
     border: none;
     cursor: pointer;
@@ -131,7 +159,7 @@
     display: none;
     position: absolute;
     background-color: #f6f6f6;
-    min-width: 230px;
+    min-width: 50px;
     border: 1px solid #ddd;
     z-index: 1;
   }
