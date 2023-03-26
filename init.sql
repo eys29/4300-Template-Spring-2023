@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS 4300project;
-USE 4300project;
+CREATE DATABASE IF NOT EXISTS kardashiandb;
+USE kardashiandb;
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: 4300project
