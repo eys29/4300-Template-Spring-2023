@@ -76,6 +76,11 @@ class MenuItems(db.Model):
     price = db.Column(db.String(1024), nullable=True)
     restaurant_table = db.relationship("Restaurant", back_populates="item_table")
 
+    def str_rep(self):
+        elements = [self.category, self.name, self.description]
+        str_item = " ".join(elem for elem in elements if elem is not None)
+        return str_item
+
     def rep(self):
         return {
             "restaurant_id": self.restaurant_id,
