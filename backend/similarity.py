@@ -10,7 +10,7 @@ def edit_distance(query, message):
     n = len(message) + 1
     delete = 1
     insert = 1
-    substitute = 1
+    substitute = 2
 
     edit_matrix = np.zeros((m, n))
     for i in range(1, m):

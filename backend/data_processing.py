@@ -13,8 +13,8 @@ from nltk.stem.porter import PorterStemmer
 stop = stopwords.words('english')
 
 DATASET_PATH = 'C:\\Users\\Prithwish Dan\\Documents\\SP23 Classes\\CS4300\\archive'
-RESTAURANT_PATH = DATASET_PATH + '\\p3restaurants.csv'
-RESTAURANT_MENUS_PATH = DATASET_PATH + '\\p3menu.csv'
+RESTAURANT_PATH = DATASET_PATH + '\\restaurant_table.csv'
+RESTAURANT_MENUS_PATH = DATASET_PATH + '\\restaurant-menus.csv'
 
 data = pd.read_csv(RESTAURANT_PATH)
 df = pd.read_csv(RESTAURANT_MENUS_PATH)
@@ -80,9 +80,13 @@ us_state_to_abbrev = {
 abb_to_us_state = {v:k for k,v in us_state_to_abbrev.items()}
 
 def fix_ampersand(text):
+    if(type(text) != str):
+        return 'None'
     return text.replace('&amp;', 'and ')
 
 def preprocess_text(text):
+    if(type(text) != str):
+        return 'None'
     text = text.lower()
     text = re.sub(r"(@\[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)|^rt|http.+?", "", text)
     stemmer = PorterStemmer()
@@ -90,6 +94,8 @@ def preprocess_text(text):
     return text
 
 def get_state(full_addr):
+    if(type(full_addr) != str):
+        return 'None'
     terms = [t.strip() for t in full_addr.split(',')]
     for term in terms:
         if len(term) == 2 and term == term.upper() and term.isalpha():
@@ -106,16 +112,24 @@ for i, row in enumerate(data.loc[:, 'category']):
 for i, row in enumerate(data.loc[:, 'full_address']):
     data.at[i, 'state'] = get_state(row)
 
-print(data.loc[:, ['name', 'category', 'state']])
-
+# print(data.loc[:, ['name', 'category', 'state']])
+print(data.columns)
+idxs = data['id'].tolist()
 # df.drop_duplicates(["restaurant_id"],keep='first',inplace=True)
+
+# print(df.loc[:, ['category', 'description']])
+print(df.shape)
+df = df.query('restaurant_id in @idxs')
+print(df.shape)
+data.to_csv(DATASET_PATH + '\\restaurant_table.csv')
+df.to_csv(DATASET_PATH + '\\item_table.csv')
+
 for i, row in enumerate(df.loc[:, 'category']):
     df.at[i, 'category'] = fix_ampersand(row)
+    df.at[i, 'id'] = i
+    df.at[i, 'description'] = fix_ampersand(df.at[i, 'description'])
+    if i % 1000 == 0:
+        print(i)
 
-for i, row in enumerate(df.loc[:, 'description']):
-    df.at[i, 'description'] = fix_ampersand(row) if(type(row) == str) else 'None'
+df.to_csv(DATASET_PATH + '\\item_table.csv')
 
-print(df.loc[:, ['category', 'description']])
-
-data.to_csv(RESTAURANT_PATH)
-df.to_csv(RESTAURANT_MENUS_PATH)
