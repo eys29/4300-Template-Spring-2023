@@ -145,4 +145,4 @@ def get_items():
     # do cosine similarity math here
     return success_response({"items": [item.serialize() for restaurant in valid_restaurants for item in restaurant.p3menu]})
 
-app.run(debug=True)
+# app.run(debug=True)
