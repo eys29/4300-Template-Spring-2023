@@ -7,31 +7,46 @@
 <body>
     <div class="full-body-container">
         <div class="top-text">
-            <div class="top-text">
+            <div class="header">
+                <img src="{{ url_for('static', filename='images/icon.png') }}" />
                 <h1 id="main-heading">Find My Food</h1>
             </div>
-            <div class="input-box" onclick="sendFocus()">
-                <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                <input placeholder="Search for a food" id="filter-text-val" onkeyup="filterText()">
-            </div>
-            <div class="input-box">
-                <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                <input placeholder="Search for a state" id="filter-text-val" onkeyup="filterText()">
-                <!-- w3schools drop down -->
-                <div class="dropdown">
-                    <button onclick="myFunction()" class="dropbtn"></button>
-                    <!-- change to states data -->
-                    <div id="myDropdown" class="dropdown-content">
-                      <a href="#about">About</a>
-                      <a href="#base">Base</a>
-                      <a href="#blog">Blog</a>
-                      <a href="#contact">Contact</a>
-                      <a href="#custom">Custom</a>
-                      <a href="#support">Support</a>
-                      <a href="#tools">Tools</a>
+            <div class="input-box-searches">
+                <div class="searches">
+                    <h2>
+                        Food
+                    </h2>
+                    <div class="input-box" onclick="sendFocus()">
+                        <img src="{{ url_for('static', filename='images/mag.png') }}" />
+                        <input placeholder="Search for a food" id="filter-text-val" onkeyup="filterText()">
                     </div>
-                  </div>
+                </div>
+                <div class="searches">
+                    <h2>
+                        Location
+                    </h2>
+                    <div class="input-box">
+                        <img src="{{ url_for('static', filename='images/mag.png') }}" />
+                        <input placeholder="Search for a state" id="filter-text-val" onkeyup="filterText()">
+                        <!-- w3schools drop down -->
+                        <div class="dropdown">
+                            <button onclick="myFunction()" class="dropbtn"></button>
+                            <!-- change to states data -->
+                            <div id="myDropdown" class="dropdown-content">
+                              <a href="#about">About</a>
+                              <a href="#base">Base</a>
+                              <a href="#blog">Blog</a>
+                              <a href="#contact">Contact</a>
+                              <a href="#custom">Custom</a>
+                              <a href="#support">Support</a>
+                              <a href="#tools">Tools</a>
+                            </div>
+                          </div>
+                    </div>
+                </div>
             </div>
+            
+            
             <div class="button" >
                 <button type="button">Search
                 </button>
