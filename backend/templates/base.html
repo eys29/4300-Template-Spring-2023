@@ -7,31 +7,51 @@
 <body>
     <div class="full-body-container">
         <div class="top-text">
-            <div class="google-colors">
-                <h1 id="google-c">C</h1>
-                <h1 id="google-s">S</h1>
-                <h1 id="google-4">4</h1>
-                <h1 id="google-3">3</h1>
-                <h1 id="google-0-1">0</h1>
-                <h1 id="google-0-2">0</h1>
+            <div class="header">
+                <img src="{{ url_for('static', filename='images/icon.png') }}" />
+                <h1 id="main-heading">Find My Food</h1>
             </div>
-            <div class="input-box" onclick="sendFocus()">
-                <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                <input placeholder="Search for a Keeping up with the Kardashians episode" id="filter-text-val" onkeyup="filterText()">
-            </div>
-            <div class="dropdown">
-                <button onclick="dropdown()" class="dropbtn">Dropdown</button>
-                <div id="myDropdown" class="dropdown-content">
-                  <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-                  <a href="#about">About</a>
-                  <a href="#base">Base</a>
-                  <a href="#blog">Blog</a>
-                  <a href="#contact">Contact</a>
-                  <a href="#custom">Custom</a>
-                  <a href="#support">Support</a>
-                  <a href="#tools">Tools</a>
+            <div class="input-box-searches">
+                <div class="searches">
+                    <h2>
+                        Food
+                    </h2>
+                    <div class="input-box" onclick="sendFocus()">
+                        <img src="{{ url_for('static', filename='images/mag.png') }}" />
+                        <input placeholder="Search for a food" id="filter-text-val" onkeyup="filterText()">
+                    </div>
                 </div>
-              </div>
+                <div class="searches">
+                    <h2>
+                        Location
+                    </h2>
+                    <div class="input-box">
+                        <img src="{{ url_for('static', filename='images/mag.png') }}" />
+                        <input placeholder="Search for a state" id="filter-text-val" onkeyup="filterText()">
+                        <!-- w3schools drop down -->
+                        <div class="dropdown">
+                            <button onclick="myFunction()" class="dropbtn"></button>
+                            <!-- change to states data -->
+                            <div id="myDropdown" class="dropdown-content">
+                              <a href="#about">About</a>
+                              <a href="#base">Base</a>
+                              <a href="#blog">Blog</a>
+                              <a href="#contact">Contact</a>
+                              <a href="#custom">Custom</a>
+                              <a href="#support">Support</a>
+                              <a href="#tools">Tools</a>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="button" >
+                <button type="button">Search
+                </button>
+            </div>
+            
         </div>
         <div id="answer-box">
 
@@ -65,26 +85,25 @@
 
         }
 
-        /* When the user clicks on the button,
-        toggle between hiding and showing the dropdown content */
-        function dropdown() {
-            document.getElementById("myDropdown").classList.toggle("show");
+        //from w3schools
+        function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
         }
-        
+
         function filterFunction() {
-            var input, filter, ul, li, a, i;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            div = document.getElementById("myDropdown");
-            a = div.getElementsByTagName("a");
-            for (i = 0; i < a.length; i++) {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        div = document.getElementById("myDropdown");
+        a = div.getElementsByTagName("a");
+        for (i = 0; i < a.length; i++) {
             txtValue = a[i].textContent || a[i].innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                a[i].style.display = "";
+            a[i].style.display = "";
             } else {
-                a[i].style.display = "none";
+            a[i].style.display = "none";
             }
-            }
+        }
         }
             
     </script>

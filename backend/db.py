@@ -3,32 +3,27 @@ from flask_sqlalchemy import SQLAlchemy
 # from datetime import datetime, time
 from typing import List
 from typing import Optional
-from sqlalchemy import ForeignKey
-from sqlalchemy import String
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import relationship
 import uuid
 
 db = SQLAlchemy()
 
 
 class Restaurant(db.Model):
-    __tablename__ = "restaurant"
+    __tablename__ = "p3restaurants"
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     position = db.Column(db.Integer, nullable=True)
-    name = db.Column(db.String, nullable=False)
-    score = db.Column(db.Float, nullable=True)
-    ratings = db.Column(db.Float, nullable=True)
-    category = db.Column(db.String, nullable=False)
-    price_range = db.Column(db.String, nullable=True)
-    full_address = db.Column(db.String, nullable=True)
+    name = db.Column(db.String(1024), nullable=False)
+    score = db.Column(db.String(1024), nullable=True)
+    ratings = db.Column(db.String(1024), nullable=True)
+    category = db.Column(db.String(1024), nullable=False)
+    price_range = db.Column(db.String(1024), nullable=True)
+    full_address = db.Column(db.String(1024), nullable=True)
     zip_code = db.Column(db.Integer, nullable=True)
     lat = db.Column(db.Float, nullable=True)
     lng = db.Column(db.Float, nullable=True)
+    state = db.Column(db.String(1024), nullable=False)
     # defining the reverse side of the relationship
-    items = db.relationship("MenuItems", back_populates="restaurant")
+    p3menu = db.relationship("MenuItems", back_populates="p3restaurants")
 
     def rep(self):
         return {
@@ -42,15 +37,16 @@ class Restaurant(db.Model):
             "full_address": self.full_address,
             "zip_code": self.zip_code,
             "lat": self.lat,
-            "lng": self.lng
+            "lng": self.lng,
+            "state": self.state
         }
 
     def serialize(self):
 
         menuitems = []
 
-        for food in self.items:
-            menuitems.append(food.menu_items.rep())
+        for food in self.p3menu:
+            menuitems.append(food.rep())
 
         return {
             "id": self.id,
@@ -64,19 +60,21 @@ class Restaurant(db.Model):
             "zip_code": self.zip_code,
             "lat": self.lat,
             "lng": self.lng,
-            "menuitems": menuitems
+            "menuitems": menuitems,
+            "state": self.state
         }
 
 
 class MenuItems(db.Model):
-    __tablename__ = "menu_items"
+    __tablename__ = "p3menu"
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
     restaurant_id = db.Column(db.Integer, db.ForeignKey(
-        "restaurant.id"), nullable=False)
-    category = db.Column(db.String, nullable=True)
-    name = db.Column(db.String, nullable=False)
-    description = db.Column(db.String, nullable=True)
-    price = db.Column(db.String, nullable=True)
-    restaurant = db.relationship(Restaurant, back_populates="restaurant")
+        "p3restaurants.id"), nullable=False)
+    category = db.Column(db.String(1024), nullable=True)
+    name = db.Column(db.String(1024), nullable=False)
+    description = db.Column(db.String(1024), nullable=True)
+    price = db.Column(db.String(1024), nullable=True)
+    p3restaurants = db.relationship("Restaurant", back_populates="p3menu")
 
     def rep(self):
         return {
