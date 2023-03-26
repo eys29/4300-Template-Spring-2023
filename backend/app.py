@@ -28,7 +28,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
 MYSQL_USER = "root"
 MYSQL_USER_PASSWORD = os.environ.get('MY_PASSWORD')
 MYSQL_PORT = 3306
-MYSQL_DATABASE = "kardashiandb"
+MYSQL_DATABASE = "4300project"
 
 mysql_engine = MySQLDatabaseHandler(MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_PORT,MYSQL_DATABASE)
 
@@ -46,12 +46,8 @@ CORS(app)
 # but if you decide to use SQLAlchemy ORM framework,
 # there's a much better and cleaner way to do this
 def sql_search(episode):
-    query_sql = f"""
-        SELECT * FROM episodes WHERE LOWER( title )
-        LIKE '%%{episode.lower()}%%' limit 10
-      """
     keys = ["id","title","descr"]
-    data = mysql_engine.query_selector(query_sql)
+    data = [["a","b","c"]]
     return json.dumps([dict(zip(keys,i)) for i in data])
 
 @app.route("/")
@@ -77,7 +73,7 @@ def location_search():
         n = len(message) + 1
         delete = 1
         insert = 1
-        substitute = 1
+        substitute = 2
 
         edit_matrix = np.zeros((m,n))
         for i in range(1, m): 
@@ -114,7 +110,8 @@ def location_search():
     results = []
     for state in states:
         edit = edit_distance(location_query, state['state'])
-        results.append((edit, state['state']))
+        if state['state']:
+            results.append((edit, state['state']))
     results.sort()
     return success_response({"states": [r[1] for r in results]})
 
@@ -143,6 +140,6 @@ def get_items():
         return failure_response("State or Craving not provided!")
     valid_restaurants = Restaurant.query.filter_by(state=state).all()
     # do cosine similarity math here
-    return success_response({"items": [item.serialize() for restaurant in valid_restaurants for item in restaurant.p3menu]})
+    return success_response({"items": [item.serialize() for restaurant in valid_restaurants for item in restaurant.item_table]})
 
-# app.run(debug=True)
+app.run(debug=True)
