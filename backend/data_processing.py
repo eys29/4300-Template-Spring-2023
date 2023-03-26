@@ -96,7 +96,7 @@ def get_state(full_addr):
             return abb_to_us_state[term]
     return 'n/a'
 
-data.drop_duplicates(["id"],keep='first',inplace=True)
+# data.drop_duplicates(["id"],keep='first',inplace=True)
 for i, row in enumerate(data.loc[:, 'name']):
     data.at[i, 'name'] = fix_ampersand(row)
 
@@ -108,7 +108,7 @@ for i, row in enumerate(data.loc[:, 'full_address']):
 
 print(data.loc[:, ['name', 'category', 'state']])
 
-df.drop_duplicates(["restaurant_id"],keep='first',inplace=True)
+# df.drop_duplicates(["restaurant_id"],keep='first',inplace=True)
 for i, row in enumerate(df.loc[:, 'category']):
     df.at[i, 'category'] = fix_ampersand(row)
 
