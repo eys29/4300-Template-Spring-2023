@@ -23,7 +23,8 @@ class Restaurant(db.Model):
     lng = db.Column(db.Float, nullable=True)
     state = db.Column(db.String(1024), nullable=False)
     # defining the reverse side of the relationship
-    item_table = db.relationship("MenuItems", back_populates="restaurant_table")
+    item_table = db.relationship(
+        "MenuItems", back_populates="restaurant_table")
 
     def rep(self):
         return {
@@ -74,7 +75,8 @@ class MenuItems(db.Model):
     name = db.Column(db.String(1024), nullable=False)
     description = db.Column(db.String(1024), nullable=True)
     price = db.Column(db.String(1024), nullable=True)
-    restaurant_table = db.relationship("Restaurant", back_populates="item_table")
+    restaurant_table = db.relationship(
+        "Restaurant", back_populates="item_table")
 
     def str_rep(self):
         elements = [self.category, self.name, self.description]

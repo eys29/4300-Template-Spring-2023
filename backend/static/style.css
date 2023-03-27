@@ -1,20 +1,20 @@
 /* @colorfood- = #ac9200 */
 
-.full-body-container{
+.full-body-container {
     position: absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    width:100%;
-    height:100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: start;
     align-items: center;
     flex-direction: column;
 }
 
-.searches{
+.searches {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -25,7 +25,7 @@
     /* height: 164px; */
 }
 
-.input-box-searches{
+.input-box-searches {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -40,16 +40,16 @@
     top: 306px; */
 }
 
-h2{
-    color:#ac9200;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    font-size:2rem;
+h2 {
+    color: #ac9200;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 2rem;
     margin-block-start: 0.2em;
     margin-block-end: 0.2em;
     /* margin: .5em; */
 }
 
-.header{
+.header {
     /* padding-right: 100px; */
     display: flex;
     /* flex-direction: row; */
@@ -58,15 +58,15 @@ h2{
     gap: 25px;
 }
 
-#main-heading{
-    color:#ac9200;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    font-size:5rem;
+#main-heading {
+    color: #ac9200;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 5rem;
 }
 
-button{
+button {
     border-radius: 50px;
-    border:1px solid black;
+    border: 1px solid black;
     /* color: #0F9D58; */
     /* fill: #0F9D58; */
     /* display: flex; */
@@ -74,33 +74,35 @@ button{
     text-align: center;
     font-weight: bold;
     margin-top: 10px;
-    padding:12px;
+    padding: 12px;
     width: 300px;
 }
 
-.input-box{
+.input-box {
     border-radius: 50px;
-    border:1px solid black;
+    border: 1px solid black;
     display: flex;
     align-items: center;
     margin-top: 10px;
-    padding:12px;
+    padding: 12px;
     width: 100%;
 }
 
-.input-box img{
+
+
+.input-box img {
     height: 20px;
-    width:20px;
+    width: 20px;
 }
 
 
-.top-text{
+.top-text {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.input-box input{
+.input-box input {
     width: 100%;
     margin-left: 10px;
     font-size: 16px;
@@ -108,16 +110,16 @@ button{
     outline: 0;
 }
 
-#answer-box{
+#answer-box {
     width: 700px;
-    margin-top:50px; 
+    margin-top: 50px;
 }
 
-.episode-title{
+.episode-title {
     font-family: 'Kanit', sans-serif;
 }
 
-.episode-desc{
+.episode-desc {
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -136,15 +138,16 @@ button{
     border: none;
     cursor: pointer;
     margin-top: 0px;
-  }
-  
-  /* Dropdown button on hover & focus */
-  .dropbtn:hover, .dropbtn:focus {
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover,
+.dropbtn:focus {
     background-color: #ac9200;
-  }
-  
-  /* The search field */
-  #myInput {
+}
+
+/* The search field */
+#myInput {
     box-sizing: border-box;
     background-image: url('searchicon.png');
     background-position: 14px 12px;
@@ -153,39 +156,45 @@ button{
     padding: 14px 20px 12px 45px;
     border: none;
     border-bottom: 1px solid #ddd;
-  }
-  
-  /* The search field when it gets focus/clicked on */
-  #myInput:focus {outline: 3px solid #ddd;}
-  
-  /* The container <div> - needed to position the dropdown content */
-  .dropdown {
+}
+
+/* The search field when it gets focus/clicked on */
+#myInput:focus {
+    outline: 3px solid #ddd;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
     position: relative;
     display: inline-block;
     height: 20px;
     /* align-items: center; */
-  }
-  
-  /* Dropdown Content (Hidden by Default) */
-  .dropdown-content {
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
     display: none;
     position: absolute;
     background-color: #f6f6f6;
     min-width: 50px;
     border: 1px solid #ddd;
     z-index: 1;
-  }
-  
-  /* Links inside the dropdown */
-  .dropdown-content a {
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-  }
-  
-  /* Change color of dropdown links on hover */
-  .dropdown-content a:hover {background-color: #f1f1f1}
-  
-  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .show {display:block;}
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #f1f1f1
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+    display: block;
+}
