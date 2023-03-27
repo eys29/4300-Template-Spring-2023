@@ -70,7 +70,12 @@
           new URLSearchParams({ state: state, craving: craving }).toString()
       )
         .then((response) => response.json())
-        .then((value) =>
+        .then((value) => {
+          if (value.items.length === 0) {
+            let tempDiv = document.createElement("div");
+            tempDiv.innerHTML = answerBoxTemplate("No Items Found", "");
+            document.getElementById("answer-box").appendChild(tempDiv);
+          }
           value.items.forEach((item) => {
             // name = item.name
             let tempDiv = document.createElement("div");
@@ -79,8 +84,8 @@
               item.restaurant.name + "<br>" + item.restaurant.full_address
             );
             document.getElementById("answer-box").appendChild(tempDiv);
-          })
-        );
+          });
+        });
     }
 
     function answerBoxTemplate(title, titleDesc) {
