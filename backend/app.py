@@ -53,9 +53,10 @@ CORS(app)
 
 
 def sql_search(episode):
-    keys = ["id","title","descr"]
-    data = [["a","b","c"]]
-    return json.dumps([dict(zip(keys,i)) for i in data])
+    keys = ["id", "title", "descr"]
+    data = [["a", "b", "c"]]
+    return json.dumps([dict(zip(keys, i)) for i in data])
+
 
 @app.route("/")
 def home():
@@ -72,6 +73,8 @@ def episodes_search():
 Takes in query parameters:
 location
 """
+
+
 @app.route("/location")
 def location_search():
     location_query = request.args.get("location")
@@ -100,6 +103,8 @@ Takes in query parameters:
 state
 craving
 """
+
+
 @app.route("/items")
 def get_items():
     state = request.args.get("state")
@@ -112,6 +117,21 @@ def get_items():
     similar_menu_items = get_menu_items_recommendations(
         craving, valid_menu_items)
     return success_response({"items": [item.serialize() for item in similar_menu_items]})
+
+
+"""
+Takes in query parameters:
+restaurant id 
+"""
+
+
+@app.route("/restaurant")
+def get_restaurant():
+    restaurant_id = request.args.get("id")
+    restaurant = Restaurant.query.filter_by(id=restaurant_id).first()
+    if restaurant is None:
+        return failure_response("Restaurant with id", restaurant_id, "not found.")
+    return success_response({"restaurant": restaurant.serialize()})
 
 
 # app.run(debug=True)
