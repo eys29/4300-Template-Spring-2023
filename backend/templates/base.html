@@ -3,121 +3,128 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap"
-    rel="stylesheet" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap"
+  rel="stylesheet"
+/>
 
 <body>
-    <div class="full-body-container">
-        <div class="top-text">
-            <div class="header">
-                <img src="{{ url_for('static', filename='images/icon.png') }}" />
-                <h1 id="main-heading">Find My Food</h1>
-            </div>
-            <div class="input-box-searches">
-                <div class="searches">
-                    <h2>
-                        Food
-                    </h2>
-                    <div class="input-box" id="input-food" onclick="sendFocus()">
-                        <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                        <input placeholder="Search for a food" id="filter-text-val">
-                    </div>
-                </div>
-                <div class="searches">
-                    <h2>
-                        Location
-                    </h2>
-                    <div class="input-box">
-                        <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                        <!-- <input placeholder="Search for a state" id="filter-text-val" onkeyup="filterText()"> -->
-                        <!-- w3schools drop down -->
-
-                        <div class="scroll-box" id="scroll-box">
-                            <form class="form-1 user">
-                                <!-- <label id="country-label" class="user-field" for="country">Search for a state</label>
-                                <input  onkeyup="filterText()"> -->
-                                <input placeholder="Search for a state" list="datalist" id="country-input" type="text"
-                                    onkeyup="statelist(this.value)" />
-                                <datalist class="user-field" id="datalist"></datalist>
-                                <!-- <button class="user-field" id="submit-country" type="submit" value="Submit">Submit
-                                </button> -->
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="button">
-                <button type="button" onclick="searchRequest()">Search</button>
-            </div>
+  <div class="full-body-container">
+    <div class="top-text">
+      <div class="header">
+        <img src="{{ url_for('static', filename='images/icon.png') }}" />
+        <h1 id="main-heading">Find My Food</h1>
+      </div>
+      <div class="input-box-searches">
+        <div class="searches">
+          <h2>Food</h2>
+          <div class="input-box" id="input-food" onclick="sendFocus()">
+            <img src="{{ url_for('static', filename='images/mag.png') }}" />
+            <input placeholder="Search for a food" id="filter-text-val" />
+          </div>
         </div>
-        <div id="answer-box"></div>
+        <div class="searches">
+          <h2>Location</h2>
+          <div class="input-box">
+            <img src="{{ url_for('static', filename='images/mag.png') }}" />
+            <!-- <input placeholder="Search for a state" id="filter-text-val" onkeyup="filterText()"> -->
+            <!-- w3schools drop down -->
+
+            <div class="scroll-box" id="scroll-box">
+              <form class="form-1 user">
+                <!-- <label id="country-label" class="user-field" for="country">Search for a state</label>
+                                <input  onkeyup="filterText()"> -->
+                <input
+                  placeholder="Search for a state"
+                  list="datalist"
+                  id="country-input"
+                  type="text"
+                  onkeyup="statelist(this.value)"
+                />
+                <datalist class="user-field" id="datalist"></datalist>
+                <!-- <button class="user-field" id="submit-country" type="submit" value="Submit">Submit
+                                </button> -->
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="button">
+        <button type="button" onclick="searchRequest()">Search</button>
+      </div>
     </div>
+    <div id="answer-box"></div>
+  </div>
 
-    <script>
+  <script>
+    function searchRequest() {
+      document.getElementById("answer-box").innerHTML = "";
+      craving = document.getElementById("filter-text-val").value;
+      console.log(craving);
+      state = document.getElementById("country-input").value;
+      console.log(state);
 
-        function searchRequest() {
-            craving = document.getElementById("filter-text-val").value;
-            console.log(craving);
-            state = document.getElementById("country-input").value;
-            console.log(state);
+      fetch(
+        "/items?" +
+          new URLSearchParams({ state: state, craving: craving }).toString()
+      )
+        .then((response) => response.json())
+        .then((value) =>
+          value.items.forEach((item) => {
+            // name = item.name
+            let tempDiv = document.createElement("div");
+            tempDiv.innerHTML = answerBoxTemplate(
+              item.name,
+              item.restaurant.name + "<br>" + item.restaurant.full_address
+            );
+            document.getElementById("answer-box").appendChild(tempDiv);
+          })
+        );
+    }
 
-            fetch("/items?" + new URLSearchParams({ state: state, craving: craving }).toString())
-                .then((response) => response.json())
-                .then((value) => value.items.forEach(item => {
-                    // name = item.name 
-                    console.log(item.restaurant.name);
-
-                }));
-
-        }
-
-        function answerBoxTemplate(title, titleDesc) {
-            return `<div class=''>
+    function answerBoxTemplate(title, titleDesc) {
+      return `<div class=''>
                 <h3 class='episode-title'>${title}</h3>
                 <p class='episode-desc'>${titleDesc}</p>
             </div>`;
-        }
+    }
 
-        function statelist(value) {
+    function statelist(value) {
+      document.getElementById("datalist").innerHTML = "";
 
-            document.getElementById("datalist").innerHTML = "";
+      fetch("/location?" + new URLSearchParams({ location: value }).toString())
+        .then((response) => response.json())
+        .then((value) =>
+          value.states.forEach((state) => {
+            var node = document.createElement("option");
+            var val = document.createTextNode(state);
+            node.appendChild(val);
+            document.getElementById("datalist").appendChild(node);
+          })
+        );
+    }
 
-            fetch("/location?" + new URLSearchParams({ location: value }).toString())
-                .then((response) => response.json())
-                .then((value) =>
-                    value.states.forEach((state) => {
-                        var node = document.createElement("option");
-                        var val = document.createTextNode(state);
-                        node.appendChild(val);
-                        document.getElementById("datalist").appendChild(node);
-                    })
-                );
-        }
+    function sendFocus() {
+      document.getElementById("filter-text-val").focus();
+    }
 
-        function sendFocus() {
-            document.getElementById("filter-text-val").focus();
-        }
-
-        function filterText() {
-            document.getElementById("answer-box").innerHTML = "";
-            fetch(
-                "/episodes?" +
-                new URLSearchParams({
-                    title: document.getElementById("filter-text-val").value,
-                }).toString()
-            )
-                .then((response) => response.json())
-                .then((data) =>
-                    data.forEach((row) => {
-                        let tempDiv = document.createElement("div");
-                        tempDiv.innerHTML = answerBoxTemplate(row.title, row.descr);
-                        document.getElementById("answer-box").appendChild(tempDiv);
-                    })
-                );
-        }
-
-
-
-    </script>
+    function filterText() {
+      document.getElementById("answer-box").innerHTML = "";
+      fetch(
+        "/episodes?" +
+          new URLSearchParams({
+            title: document.getElementById("filter-text-val").value,
+          }).toString()
+      )
+        .then((response) => response.json())
+        .then((data) =>
+          data.forEach((row) => {
+            let tempDiv = document.createElement("div");
+            tempDiv.innerHTML = answerBoxTemplate(row.title, row.descr);
+            document.getElementById("answer-box").appendChild(tempDiv);
+          })
+        );
+    }
+  </script>
 </body>
