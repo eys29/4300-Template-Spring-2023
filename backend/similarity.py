@@ -28,7 +28,7 @@ def edit_distance(query, message):
     return edit_matrix[m-1][n-1]
 
 
-def get_menu_items_recommendations(query, menu_items, limit=10):
+def get_menu_items_recommendations(query, menu_items, limit=10, sim_threshold=0.35):
     vectorizer = TfidfVectorizer()
     menu_items_str = [item.str_rep() for item in menu_items]
     tfidf = vectorizer.fit_transform(menu_items_str)
@@ -37,4 +37,5 @@ def get_menu_items_recommendations(query, menu_items, limit=10):
     indices = np.argsort(sims)[::-1]
     if len(indices) > limit:
         indices = indices[:limit]
+    indices = [idx for idx in indices if sims[idx] >= sim_threshold]
     return [menu_items[idx] for idx in indices]
