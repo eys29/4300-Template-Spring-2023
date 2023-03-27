@@ -1,107 +1,110 @@
-<!doctype html>
+<!DOCTYPE html>
 <title>{% block title %}{% endblock %} - Flaskr</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap"
-    rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap"
+  rel="stylesheet"
+/>
 
 <body>
-    <div class="full-body-container">
-        <div class="top-text">
-            <div class="header">
-                <img src="{{ url_for('static', filename='images/icon.png') }}" />
-                <h1 id="main-heading">Find My Food</h1>
-            </div>
-            <div class="input-box-searches">
-                <div class="searches">
-                    <h2>
-                        Food
-                    </h2>
-                    <div class="input-box" onclick="sendFocus()">
-                        <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                        <input placeholder="Search for a food" id="filter-text-val" onkeyup="filterText()">
-                    </div>
-                </div>
-                <div class="searches">
-                    <h2>
-                        Location
-                    </h2>
-                    <div class="input-box">
-                        <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                        <!-- <input placeholder="Search for a state" id="filter-text-val" onkeyup="filterText()"> -->
-                        <!-- w3schools drop down -->
+  <div class="full-body-container">
+    <div class="top-text">
+      <div class="header">
+        <img src="{{ url_for('static', filename='images/icon.png') }}" />
+        <h1 id="main-heading">Find My Food</h1>
+      </div>
+      <div class="input-box-searches">
+        <div class="searches">
+          <h2>Food</h2>
+          <div class="input-box" onclick="sendFocus()">
+            <img src="{{ url_for('static', filename='images/mag.png') }}" />
+            <input
+              placeholder="Search for a food"
+              id="filter-text-val"
+              onkeyup="filterText()"
+            />
+          </div>
+        </div>
+        <div class="searches">
+          <h2>Location</h2>
+          <div class="input-box">
+            <img src="{{ url_for('static', filename='images/mag.png') }}" />
+            <!-- <input placeholder="Search for a state" id="filter-text-val" onkeyup="filterText()"> -->
+            <!-- w3schools drop down -->
 
-                        <div class="scroll-box" id="scroll-box">
-                            <form class="form-1 user">
-                                <!-- <label id="country-label" class="user-field" for="country">Search for a state</label>
+            <div class="scroll-box" id="scroll-box">
+              <form class="form-1 user">
+                <!-- <label id="country-label" class="user-field" for="country">Search for a state</label>
                                 <input  onkeyup="filterText()"> -->
-                                <input placeholder="Search for a state" id="filter-text-val" list="datalist"
-                                    id="country-input" type="text" onkeyup="statelist(this.value)" />
-                                <datalist class="user-field" id="datalist"></datalist>
-                                <!-- <button class="user-field" id="submit-country" type="submit" value="Submit">Submit
+                <input
+                  placeholder="Search for a state"
+                  id="filter-text-val"
+                  list="datalist"
+                  id="country-input"
+                  type="text"
+                  onkeyup="statelist(this.value)"
+                />
+                <datalist class="user-field" id="datalist"></datalist>
+                <!-- <button class="user-field" id="submit-country" type="submit" value="Submit">Submit
                                 </button> -->
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
+              </form>
             </div>
-
-
-            <div class="button">
-                <button type="button">Search
-                </button>
-            </div>
-
+          </div>
         </div>
-        <div id="answer-box">
+      </div>
 
-        </div>
+      <div class="button">
+        <button type="button" onclick="search()">Search</button>
+      </div>
     </div>
+    <div id="answer-box"></div>
+  </div>
 
-    <script>
-
-        function answerBoxTemplate(title, titleDesc) {
-            return `<div class=''>
+  <script>
+    function answerBoxTemplate(title, titleDesc) {
+      return `<div class=''>
                 <h3 class='episode-title'>${title}</h3>
                 <p class='episode-desc'>${titleDesc}</p>
-            </div>`
-        }
+            </div>`;
+    }
 
-        function statelist(value) {
-            document.getElementById('datalist').innerHTML = '';
+    function statelist(value) {
+      document.getElementById("datalist").innerHTML = "";
 
-            fetch("/location?" + new URLSearchParams({ location: value }).toString())
-                .then((response) => response.json())
-                .then((value) => value.states.forEach(state => {
-                    var node = document.createElement("option");
-                    var val = document.createTextNode(state);
-                    node.appendChild(val);
-                    document.getElementById("datalist").appendChild(node);
-                }));
-        }
+      fetch("/location?" + new URLSearchParams({ location: value }).toString())
+        .then((response) => response.json())
+        .then((value) =>
+          value.states.forEach((state) => {
+            var node = document.createElement("option");
+            var val = document.createTextNode(state);
+            node.appendChild(val);
+            document.getElementById("datalist").appendChild(node);
+          })
+        );
+    }
 
-        function sendFocus() {
-            document.getElementById('filter-text-val').focus()
-        }
+    function sendFocus() {
+      document.getElementById("filter-text-val").focus();
+    }
 
-        function filterText() {
-            document.getElementById("answer-box").innerHTML = ""
-            fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
-                .then((response) => response.json())
-                .then((data) => data.forEach(row => {
-
-                    let tempDiv = document.createElement("div")
-                    tempDiv.innerHTML = answerBoxTemplate(row.title, row.descr)
-                    document.getElementById("answer-box").appendChild(tempDiv)
-                }));
-
-        }
-
-
-
-
-
-    </script>
+    function filterText() {
+      document.getElementById("answer-box").innerHTML = "";
+      fetch(
+        "/episodes?" +
+          new URLSearchParams({
+            title: document.getElementById("filter-text-val").value,
+          }).toString()
+      )
+        .then((response) => response.json())
+        .then((data) =>
+          data.forEach((row) => {
+            let tempDiv = document.createElement("div");
+            tempDiv.innerHTML = answerBoxTemplate(row.title, row.descr);
+            document.getElementById("answer-box").appendChild(tempDiv);
+          })
+        );
+    }
+  </script>
 </body>

@@ -83,7 +83,7 @@ class MenuItems(db.Model):
 
     def rep(self):
         return {
-            "restaurant_id": self.restaurant_id,
+            "restaurant_id": restaurant.rep(),
             "category": self.category,
             "name": self.name,
             "description": self.description,
@@ -92,8 +92,10 @@ class MenuItems(db.Model):
         }
 
     def serialize(self):
+        restaurant = Restaurant.query.filter_by(id=self.restaurant_id).first()
         return {
             "restaurant_id": self.restaurant_id,
+            "restaurant": restaurant.rep(),
             "category": self.category,
             "name": self.name,
             "description": self.description,
