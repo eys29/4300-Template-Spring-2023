@@ -3,7 +3,9 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap"
+    rel="stylesheet">
+
 <body>
     <div class="full-body-container">
         <div class="top-text">
@@ -27,31 +29,31 @@
                     </h2>
                     <div class="input-box">
                         <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                        <input placeholder="Search for a state" id="filter-text-val" onkeyup="filterText()">
+                        <!-- <input placeholder="Search for a state" id="filter-text-val" onkeyup="filterText()"> -->
                         <!-- w3schools drop down -->
-                        <div class="dropdown">
-                            <button onclick="myFunction()" class="dropbtn"></button>
-                            <!-- change to states data -->
-                            <div id="myDropdown" class="dropdown-content">
-                              <a href="#about">About</a>
-                              <a href="#base">Base</a>
-                              <a href="#blog">Blog</a>
-                              <a href="#contact">Contact</a>
-                              <a href="#custom">Custom</a>
-                              <a href="#support">Support</a>
-                              <a href="#tools">Tools</a>
-                            </div>
-                          </div>
+
+                        <div class="scroll-box" id="scroll-box">
+                            <form class="form-1 user">
+                                <!-- <label id="country-label" class="user-field" for="country">Search for a state</label>
+                                <input  onkeyup="filterText()"> -->
+                                <input placeholder="Search for a state" id="filter-text-val" list="datalist"
+                                    id="country-input" type="text" onkeyup="statelist(this.value)" />
+                                <datalist class="user-field" id="datalist"></datalist>
+                                <!-- <button class="user-field" id="submit-country" type="submit" value="Submit">Submit
+                                </button> -->
+                            </form>
+                        </div>
+
                     </div>
                 </div>
             </div>
-            
-            
-            <div class="button" >
+
+
+            <div class="button">
                 <button type="button">Search
                 </button>
             </div>
-            
+
         </div>
         <div id="answer-box">
 
@@ -60,51 +62,46 @@
 
     <script>
 
-        function answerBoxTemplate(title,titleDesc){
+        function answerBoxTemplate(title, titleDesc) {
             return `<div class=''>
                 <h3 class='episode-title'>${title}</h3>
                 <p class='episode-desc'>${titleDesc}</p>
             </div>`
         }
 
-        function sendFocus(){
+        function statelist(value) {
+            document.getElementById('datalist').innerHTML = '';
+
+            fetch("/location?" + new URLSearchParams({ location: value }).toString())
+                .then((response) => response.json())
+                .then((value) => value.states.forEach(state => {
+                    var node = document.createElement("option");
+                    var val = document.createTextNode(state);
+                    node.appendChild(val);
+                    document.getElementById("datalist").appendChild(node);
+                }));
+        }
+
+        function sendFocus() {
             document.getElementById('filter-text-val').focus()
         }
 
-        function filterText(){
+        function filterText() {
             document.getElementById("answer-box").innerHTML = ""
-            console.log(document.getElementById("filter-text-val").value)
             fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
-            .then((response) => response.json())
-            .then((data) => data.forEach(row => {
-                
-                let tempDiv = document.createElement("div")
-                tempDiv.innerHTML = answerBoxTemplate(row.title,row.descr)
-                document.getElementById("answer-box").appendChild(tempDiv)
-            }));
+                .then((response) => response.json())
+                .then((data) => data.forEach(row => {
+
+                    let tempDiv = document.createElement("div")
+                    tempDiv.innerHTML = answerBoxTemplate(row.title, row.descr)
+                    document.getElementById("answer-box").appendChild(tempDiv)
+                }));
 
         }
 
-        //from w3schools
-        function myFunction() {
-        document.getElementById("myDropdown").classList.toggle("show");
-        }
 
-        function filterFunction() {
-        var input, filter, ul, li, a, i;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        div = document.getElementById("myDropdown");
-        a = div.getElementsByTagName("a");
-        for (i = 0; i < a.length; i++) {
-            txtValue = a[i].textContent || a[i].innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            a[i].style.display = "";
-            } else {
-            a[i].style.display = "none";
-            }
-        }
-        }
-            
+
+
+
     </script>
 </body>
