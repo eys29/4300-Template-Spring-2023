@@ -114,6 +114,8 @@ def get_items():
     valid_restaurants = Restaurant.query.filter_by(state=state).all()
     valid_menu_items = [
         item for restaurant in valid_restaurants for item in restaurant.item_table]
+    if len(valid_menu_items) == 0:
+        return success_response({"items": []})
     similar_menu_items = get_menu_items_recommendations(
         craving, valid_menu_items)
     return success_response({"items": [item.serialize() for item in similar_menu_items]})

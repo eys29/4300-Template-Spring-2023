@@ -85,7 +85,7 @@ class MenuItems(db.Model):
 
     def rep(self):
         return {
-            "restaurant_id": restaurant.rep(),
+            "restaurant_id": self.restaurant_id,
             "category": self.category,
             "name": self.name,
             "description": self.description,

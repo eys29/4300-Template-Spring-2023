@@ -20,7 +20,7 @@
                     </h2>
                     <div class="input-box" id="input-food" onclick="sendFocus()">
                         <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                        <input placeholder="Search for a food" id="filter-text-val" onkeyup="filterText()">
+                        <input placeholder="Search for a food" id="filter-text-val">
                     </div>
                 </div>
                 <div class="searches">
@@ -36,8 +36,8 @@
                             <form class="form-1 user">
                                 <!-- <label id="country-label" class="user-field" for="country">Search for a state</label>
                                 <input  onkeyup="filterText()"> -->
-                                <input placeholder="Search for a state" id="filter-text-val" list="datalist"
-                                    id="country-input" type="text" onkeyup="statelist(this.value)" />
+                                <input placeholder="Search for a state" list="datalist" id="country-input" type="text"
+                                    onkeyup="statelist(this.value)" />
                                 <datalist class="user-field" id="datalist"></datalist>
                                 <!-- <button class="user-field" id="submit-country" type="submit" value="Submit">Submit
                                 </button> -->
@@ -48,7 +48,7 @@
             </div>
 
             <div class="button">
-                <button type="button" onclick="search()">Search</button>
+                <button type="button" onclick="searchRequest()">Search</button>
             </div>
         </div>
         <div id="answer-box"></div>
@@ -56,10 +56,17 @@
 
     <script>
 
-        function searchRequest(craving, state) {
+        function searchRequest() {
+            craving = document.getElementById("filter-text-val").value;
+            console.log(craving);
+            state = document.getElementById("country-input").value;
+            console.log(state);
+
             fetch("/items?" + new URLSearchParams({ state: state, craving: craving }).toString())
                 .then((response) => response.json())
-                .then((value) => value.items.forEach(state => {
+                .then((value) => value.items.forEach(item => {
+                    // name = item.name 
+                    console.log(item.restaurant.name);
 
                 }));
 
@@ -73,6 +80,7 @@
         }
 
         function statelist(value) {
+
             document.getElementById("datalist").innerHTML = "";
 
             fetch("/location?" + new URLSearchParams({ location: value }).toString())
@@ -108,5 +116,8 @@
                     })
                 );
         }
+
+
+
     </script>
 </body>
