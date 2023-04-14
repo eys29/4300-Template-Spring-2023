@@ -3,10 +3,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.decomposition import TruncatedSVD
 import numpy as np
 
-import matplotlib
-import matplotlib.pyplot as plt
-
-
 def edit_distance(query, message):
     query = query.lower()
     message = message.lower()
