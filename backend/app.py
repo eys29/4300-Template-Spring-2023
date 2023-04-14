@@ -118,7 +118,39 @@ def get_items():
         return success_response({"items": []})
     similar_menu_items = get_menu_items_recommendations(
         craving, valid_menu_items)
-    return success_response({"items": [item.serialize() for item in similar_menu_items]})
+    if len(similar_menu_items) > 0:
+        return success_response({"items": [item.serialize() for item in similar_menu_items]})
+    else:
+        regions = [["Connecticut", "Maine", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont"],
+                   ["New Jersey", "New York", "Pennsylvania"],
+                   ["Illinois", "Indiana", "Michigan", "Ohio", "Wisconsin"],
+                   ["Iowa", "Kansas", "Minesota", "Missouri",
+                       "Nebraska", "North Dakota", "South Dakota"],
+                   ["Delaware", "Florida", "Georgia", "Maryland", "North Carolina",
+                       "South Carolina", "Virginia", "District of Columbia", "West Virginia"],
+                   ["Alabama", "Kentucky", "Mississippi", "Tennessee"],
+                   ["Arkansas", "Louisiana", "Oklahoma", "Texas"],
+                   ["Arizona", "Colorado", "Idaho", "Montana",
+                       "Nevada", "New Mexico", "Utah", "Wyoming"],
+                   ["Alaska", "California", "Hawaii", "Oregon", "Washington"],
+                   ["American Samoa", "Guam", "Northern Mariana Islands", "Puerto Rico", "United States Minor Outlying Islands", "U.S. Virgin Islands"]]
+        for i in regions:
+            if state in i:
+                st_region = i
+
+        valid_restaurants = Restaurant.query.filter_by(state=state).all()
+        for r in st_region:
+            if r != state:
+                valid_restaurants = valid_restaurants.join(
+                    Restaurant.query.filter_by(state=r).all())
+        valid_menu_items = [
+            item for restaurant in valid_restaurants for item in restaurant.item_table]
+        if len(valid_menu_items) == 0:
+            return success_response({"items": []})
+        similar_menu_items = get_menu_items_recommendations(
+            craving, valid_menu_items)
+
+        return success_response({"items": [item.serialize() for item in similar_menu_items]})
 
 
 """

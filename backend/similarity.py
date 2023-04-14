@@ -38,4 +38,5 @@ def get_menu_items_recommendations(query, menu_items, limit=10, sim_threshold=0.
     if len(indices) > limit:
         indices = indices[:limit]
     indices = [idx for idx in indices if sims[idx] >= sim_threshold]
+
     return [menu_items[idx] for idx in indices]
