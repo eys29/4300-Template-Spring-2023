@@ -1,5 +1,6 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
+import DropdownSearch from "./DropdownSearch";
 import { TextField } from "@mui/material";
 import foodIcon from "../assets/images/mag.png";
 
@@ -20,6 +21,10 @@ const FoodInput = ({}) => {
             id="filter-text-val"
           />
         </div>
+      </div>
+      <div class="searches">
+        <Typography variant="h2">Location</Typography>
+        <DropdownSearch />
       </div>
     </div>
   );
