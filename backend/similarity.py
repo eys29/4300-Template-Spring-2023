@@ -1,7 +1,7 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.decomposition import TruncatedSVD
 import numpy as np
-
 
 def edit_distance(query, message):
     query = query.lower()
@@ -32,8 +32,11 @@ def get_menu_items_recommendations(query, menu_items, limit=10, sim_threshold=0.
     vectorizer = TfidfVectorizer()
     menu_items_str = [item.str_rep() for item in menu_items]
     tfidf = vectorizer.fit_transform(menu_items_str)
-    query_vector = vectorizer.transform([query])
-    sims = cosine_similarity(query_vector, tfidf).flatten()
+    svd = TruncatedSVD(n_components=40)
+    svd_docs = svd.fit_transform(tfidf)
+    query_tfidf = vectorizer.transform([query])
+    query_vec = svd.transform(query_tfidf)
+    sims = cosine_similarity(query_vec, svd_docs).flatten()
     indices = np.argsort(sims)[::-1]
     if len(indices) > limit:
         indices = indices[:limit]
