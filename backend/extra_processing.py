@@ -104,5 +104,5 @@ orig['state'] = orig['full_address'].apply(get_state)
 # print(df.loc[75075, :])
 # print(data['name'])
 
-orig.to_csv(DATASET_PATH + '\\restaurant_table.csv')
-# df.to_csv(DATASET_PATH + '\\item_table.csv')
+orig.to_csv(DATASET_PATH + '\\restaurant_table2.csv')
+# df.to_csv(DATASET_PATH + '\\item_table2.csv')

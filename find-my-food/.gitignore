@@ -1,24 +1,3 @@
-env/*
-.DS_Store
-Docker/__pycache__
-.env
-
-venv/
-
-*.pyc
-__pycache__/
-
-instance/
-
-.pytest_cache/
-.coverage
-htmlcov/
-
-dist/
-build/
-*.egg-info/
-helpers/*
-
 # Logs
 logs
 *.log
