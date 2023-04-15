@@ -100,7 +100,7 @@ def get_state(full_addr):
     for term in terms:
         if len(term) == 2 and term == term.upper() and term.isalpha():
             return abb_to_us_state[term]
-    return 'n/a'
+    return 'None'
 
 # data.drop_duplicates(["id"],keep='first',inplace=True)
 for i, row in enumerate(data.loc[:, 'name']):
