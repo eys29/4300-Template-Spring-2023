@@ -30,7 +30,7 @@ def edit_distance(query, message):
 
 def get_menu_items_recommendations(query, menu_items, limit=10, sim_threshold=0.35):
     vectorizer = TfidfVectorizer()
-    menu_items_str = [item.str_rep() for item in menu_items]
+    menu_items_str = [item[0].str_rep() for item in menu_items]
     tfidf = vectorizer.fit_transform(menu_items_str)
     svd = TruncatedSVD(n_components=40)
     svd_docs = svd.fit_transform(tfidf)
@@ -41,4 +41,6 @@ def get_menu_items_recommendations(query, menu_items, limit=10, sim_threshold=0.
     if len(indices) > limit:
         indices = indices[:limit]
     indices = [idx for idx in indices if sims[idx] >= sim_threshold]
-    return [menu_items[idx] for idx in indices]
+    items_sorted_by_sim = [menu_items[idx] for idx in indices]
+    items_sorted_by_rating = sorted(items_sorted_by_sim, key=lambda x: x[0], reverse=True)
+    return [item[0] for item in items_sorted_by_rating]
