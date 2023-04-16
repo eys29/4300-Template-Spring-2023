@@ -12,6 +12,7 @@
     justify-content: start;
     align-items: center;
     flex-direction: column;
+    /* color: bisque; */
 }
 
 .searches {
@@ -21,8 +22,7 @@
     padding: 0px;
     gap: 10px;
 
-    /* width: 460px; */
-    /* height: 164px; */
+    width: 300px;
 }
 
 .input-box-searches {
@@ -38,6 +38,10 @@
     height: 164px;
     left: 280px;
     top: 306px; */
+}
+
+h3 {
+    color: #ac9200;
 }
 
 h2 {
@@ -73,7 +77,7 @@ button {
     /* align-items: center; */
     text-align: center;
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 40px;
     padding: 12px;
     width: 300px;
 }
@@ -110,34 +114,32 @@ button {
     outline: 0;
 }
 
-#answer-box {
+/* #answer-box {
     width: 700px;
     margin-top: 50px;
+} */
+
+.answer {
+    border: 1px #ac9200;
+    border-radius: 50px;
+    /* border: 1px solid black; */
+    /* display: flex; */
+    /* flex-direction: column; */
+    margin-top: 10px;
+    padding: 12px;
+    /* width: 300px; */
 }
 
 .episode-title {
-    font-family: 'Kanit', sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .episode-desc {
-    font-family: 'Montserrat', sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-
-
-
-/* w3 schools drop down */
-/* Dropdown Button */
-.dropbtn {
-    background-color: #ac9200;
-    color: white;
-    /* padding: 16px; */
-    width: 50px;
-    height: 20px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    margin-top: 0px;
+.other-info {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 /* Dropdown button on hover & focus */
