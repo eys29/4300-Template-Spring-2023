@@ -9,22 +9,22 @@ db = SQLAlchemy()
 
 
 class Restaurant(db.Model):
-    __tablename__ = "restaurant_table"
+    __tablename__ = "restaurant"
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    position = db.Column(db.Integer, nullable=True)
+    position = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(1024), nullable=False)
-    score = db.Column(db.String(1024), nullable=True)
-    ratings = db.Column(db.String(1024), nullable=True)
+    score = db.Column(db.String(1024), nullable=False)
+    ratings = db.Column(db.String(1024), nullable=False)
     category = db.Column(db.String(1024), nullable=False)
-    price_range = db.Column(db.String(1024), nullable=True)
-    full_address = db.Column(db.String(1024), nullable=True)
-    zip_code = db.Column(db.Integer, nullable=True)
-    lat = db.Column(db.Float, nullable=True)
-    lng = db.Column(db.Float, nullable=True)
+    price_range = db.Column(db.String(1024), nullable=False)
+    full_address = db.Column(db.String(1024), nullable=False)
+    zip_code = db.Column(db.Integer, nullable=False)
+    lat = db.Column(db.Float, nullable=False)
+    lng = db.Column(db.Float, nullable=False)
     state = db.Column(db.String(1024), nullable=False)
     # defining the reverse side of the relationship
-    item_table = db.relationship(
-        "MenuItems", back_populates="restaurant_table")
+    items = db.relationship(
+        "MenuItems", back_populates="restaurant")
 
     def rep(self):
         return {
@@ -46,7 +46,7 @@ class Restaurant(db.Model):
 
         menuitems = []
 
-        for food in self.item_table:
+        for food in self.items:
             menuitems.append(food.rep())
 
         return {
@@ -67,16 +67,16 @@ class Restaurant(db.Model):
 
 
 class MenuItems(db.Model):
-    __tablename__ = "item_table"
+    __tablename__ = "items"
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     restaurant_id = db.Column(db.Integer, db.ForeignKey(
-        "restaurant_table.id"), nullable=False)
-    category = db.Column(db.String(1024), nullable=True)
+        "restaurant.id"), nullable=False)
+    category = db.Column(db.String(1024), nullable=False)
     name = db.Column(db.String(1024), nullable=False)
-    description = db.Column(db.String(1024), nullable=True)
-    price = db.Column(db.String(1024), nullable=True)
-    restaurant_table = db.relationship(
-        "Restaurant", back_populates="item_table")
+    description = db.Column(db.String(1024), nullable=False)
+    price = db.Column(db.String(1024), nullable=False)
+    restaurant = db.relationship(
+        "Restaurant", back_populates="items")
 
     def str_rep(self):
         elements = [self.category, self.name, self.description]
