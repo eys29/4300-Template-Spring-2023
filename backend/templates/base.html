@@ -31,20 +31,20 @@
             <!-- w3schools drop down -->
 
             <div class="scroll-box" id="scroll-box">
-              <form class="form-1 user">
-                <!-- <label id="country-label" class="user-field" for="country">Search for a state</label>
-                                <input  onkeyup="filterText()"> -->
-                <input
-                  placeholder="Search for a state"
-                  list="datalist"
-                  id="country-input"
-                  type="text"
-                  onkeyup="statelist(this.value)"
-                />
-                <datalist class="user-field" id="datalist"></datalist>
-                <!-- <button class="user-field" id="submit-country" type="submit" value="Submit">Submit
-                                </button> -->
-              </form>
+                <form class="form-1 user">
+                    <!-- <label id="country-label" class="user-field" for="country">Search for a state</label>
+                                    <input  onkeyup="filterText()"> -->
+                    <input
+                      placeholder="Search for a state"
+                      list="datalist"
+                      id="country-input"
+                      type="text"
+                      onkeyup="statelist(this.value)"
+                    />
+                    <datalist class="user-field" id="datalist"></datalist>
+                    <!-- <button class="user-field" id="submit-country" type="submit" value="Submit">Submit
+                                    </button> -->
+                  </form>
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@
         .then((value) => {
           if (value.items.length === 0) {
             let tempDiv = document.createElement("div");
-            tempDiv.innerHTML = answerBoxTemplate("No Items Found", "");
+            tempDiv.innerHTML = answerBoxTemplate("No Items Found", "", "");
             document.getElementById("answer-box").appendChild(tempDiv);
           }
           value.items.forEach((item) => {
@@ -81,17 +81,25 @@
             let tempDiv = document.createElement("div");
             tempDiv.innerHTML = answerBoxTemplate(
               item.name,
-              item.restaurant.name + "<br>" + item.restaurant.full_address
+              item.restaurant.category,
+              item.restaurant.name,
+              item.restaurant.full_address,
+              item.restaurant.score,
+              item.restaurant.ratings,
+              item.restaurant.price_range
             );
             document.getElementById("answer-box").appendChild(tempDiv);
           });
         });
     }
 
-    function answerBoxTemplate(title, titleDesc) {
-      return `<div class=''>
-                <h3 class='episode-title'>${title}</h3>
-                <p class='episode-desc'>${titleDesc}</p>
+    function answerBoxTemplate(item_name, category, item_desc, address, score, rating, price) {
+      return `<div class='answer'>
+                <h3 class='episode-title'>${item_name}</h3>
+                <p class='episode-title'> <b>Cuisine Type:</b> ${category}</p>
+                <p class='episode-desc'><b>Restaurant:</b> ${item_desc}</p>
+                <p class='episode-desc'> <b>Address:</b> ${address}</p>
+                <p class='other-info'><b>Average rating:</b> ${score}  <b>Number of ratings:</b> ${rating} <b>Price:</b> ${price}</p>
             </div>`;
     }
 
