@@ -42,5 +42,5 @@ def get_menu_items_recommendations(query, menu_items, limit=10, sim_threshold=0.
         indices = indices[:limit]
     indices = [idx for idx in indices if sims[idx] >= sim_threshold]
     items_sorted_by_sim = [menu_items[idx] for idx in indices]
-    items_sorted_by_rating = sorted(items_sorted_by_sim, key=lambda x: x[0], reverse=True)
+    items_sorted_by_rating = sorted(items_sorted_by_sim, key=lambda x: x[1], reverse=True)
     return [item[0] for item in items_sorted_by_rating]

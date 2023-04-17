@@ -113,7 +113,7 @@ def get_items():
         return failure_response("State or Craving not provided!")
     valid_restaurants = Restaurant.query.filter_by(state=state).all()
     valid_menu_items = [
-        (item, restaurant.rating) for restaurant in valid_restaurants for item in restaurant.items]
+        (item, restaurant.score) for restaurant in valid_restaurants for item in restaurant.items]
     if len(valid_menu_items) == 0:
         return success_response({"items": []})
     similar_menu_items = get_menu_items_recommendations(
