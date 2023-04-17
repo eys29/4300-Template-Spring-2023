@@ -105,6 +105,28 @@ craving
 """
 
 
+@app.route("/items_grouped")
+def get_items_grouped():
+    state = request.args.get("state")
+    craving = request.args.get("craving")
+    if state is None or craving is None:
+        return failure_response("State or Craving not provided!")
+    valid_restaurants = Restaurant.query.filter_by(state=state).all()
+    valid_menu_items = [
+        (item, restaurant.score) for restaurant in valid_restaurants for item in restaurant.item_table]
+    if len(valid_menu_items) == 0:
+        return success_response({"items": []})
+    similar_menu_items = get_menu_items_recommendations(
+        craving, valid_menu_items)
+
+    res = {"restaurants":{}}
+    for item in similar_menu_items:
+        restaurant_name = item.serialize()["restaurant"]["name"]
+        if restaurant_name not in res["restaurants"]:
+            res["restaurants"][restaurant_name] = []
+        res["restaurants"][restaurant_name].append(item.rep())
+    return success_response(res)
+
 @app.route("/items")
 def get_items():
     state = request.args.get("state")
@@ -119,6 +141,7 @@ def get_items():
     similar_menu_items = get_menu_items_recommendations(
         craving, valid_menu_items)
     return success_response({"items": [item.serialize() for item in similar_menu_items]})
+
 
 
 """
@@ -136,4 +159,4 @@ def get_restaurant():
     return success_response({"restaurant": restaurant.serialize()})
 
 
-# app.run(debug=True)
+app.run(debug=True)
