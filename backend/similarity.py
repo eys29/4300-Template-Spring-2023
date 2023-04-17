@@ -29,6 +29,7 @@ def edit_distance(query, message):
 
 
 def get_menu_items_recommendations(query, menu_items, limit=10, sim_threshold=0.35):
+    if len(menu_items) == 0: return []
     vectorizer = TfidfVectorizer()
     menu_items_str = [item[0].str_rep() for item in menu_items]
     tfidf = vectorizer.fit_transform(menu_items_str)

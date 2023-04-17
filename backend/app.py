@@ -10,6 +10,7 @@ from db import db
 from db import Restaurant, MenuItems
 
 from similarity import get_menu_items_recommendations, edit_distance
+from location import get_neighboring_states, get_all_states
 
 load_dotenv()
 
@@ -51,22 +52,9 @@ CORS(app)
 # but if you decide to use SQLAlchemy ORM framework,
 # there's a much better and cleaner way to do this
 
-
-def sql_search(episode):
-    keys = ["id", "title", "descr"]
-    data = [["a", "b", "c"]]
-    return json.dumps([dict(zip(keys, i)) for i in data])
-
-
 @app.route("/")
 def home():
     return render_template('base.html', title="sample html")
-
-
-@app.route("/episodes")
-def episodes_search():
-    text = request.args.get("title")
-    return sql_search(text)
 
 
 """
@@ -78,24 +66,14 @@ location
 @app.route("/location")
 def location_search():
     location_query = request.args.get("location")
-    states = Restaurant.query.with_entities(Restaurant.state).distinct()
+    # states = Restaurant.query.with_entities(Restaurant.state).distinct()
+    states = get_all_states()
     results = []
     for state in states:
-        edit = edit_distance(location_query, state['state'])
-        if state['state']:
-            results.append((edit, state['state']))
+        edit = edit_distance(location_query, state)
+        results.append((edit, state))
     results.sort()
     return success_response({"states": [r[1] for r in results]})
-
-
-@app.route("/test")
-def test_route():
-    restaurant = Restaurant.query.filter_by(state='Alabama').first()
-    if restaurant is None:
-        return failure_response("Restaurant not found!")
-    return success_response(
-        {"restaurant": restaurant.serialize()}
-    )
 
 
 """
@@ -111,16 +89,32 @@ def get_items():
     craving = request.args.get("craving")
     if state is None or craving is None:
         return failure_response("State or Craving not provided!")
-    valid_restaurants = Restaurant.query.filter_by(state=state).all()
+    
+    similar_items = get_items_from_states(craving, [state])
+
+    #If no similar items found in state, search for items in neighboring states
+    if len(similar_items) == 0: 
+        region_states = get_neighboring_states(state)
+        similar_items = get_items_from_states(craving, region_states)
+    
+    return success_response({"items": [item.serialize() for item in similar_items]})
+
+def get_items_from_states(craving, states): 
+    valid_restaurants = [
+        restaurant
+        for state in states
+        for restaurant in Restaurant.query.filter_by(state=state).all() 
+    ]
     valid_menu_items = [
-        (item, restaurant.score) for restaurant in valid_restaurants for item in restaurant.item_table]
-    if len(valid_menu_items) == 0:
-        return success_response({"items": []})
+        (item, restaurant.score) 
+        for restaurant in valid_restaurants 
+        for item in restaurant.item_table
+    ]
     similar_menu_items = get_menu_items_recommendations(
-        craving, valid_menu_items)
-    return success_response({"items": [item.serialize() for item in similar_menu_items]})
-
-
+        craving, valid_menu_items
+    )
+    return similar_menu_items
+    
 """
 Takes in query parameters:
 restaurant id 
