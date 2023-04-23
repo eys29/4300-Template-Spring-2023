@@ -114,6 +114,64 @@ def get_items_from_states(craving, states):
         craving, valid_menu_items
     )
     return similar_menu_items
+
+
+"""
+"Band W Philly Steaks": {
+    "info": {
+        "id": 193,
+        "position": 23,
+        "name": "Band W Philly Steaks",
+        "score": "4.7",
+        "ratings": "30.0",
+        "category": "Salads American Seafood Sandwich Wings",
+        "price_range": "$$",
+        "full_address": "707 Richard Arrington Junior Boulevard South, 103B, Birmingham, AL, 35233",
+        "zip_code": 35233,
+        "lat": 33.5083,
+        "lng": -86.8004,
+        "state": "Alabama"
+    },
+    "items": [
+        {
+            "restaurant_id": 193,
+            "category": "Gourmet Fries",
+            "name": "Ultimate Fries",
+            "description": "None",
+            "price": "4.99 USD"
+        },
+        {
+            "restaurant_id": 193,
+            "category": "Gourmet Fries",
+            "name": "Original Fries",
+            "description": "None",
+            "price": "2.79 USD"
+        }
+    ]
+}
+"""
+
+@app.route("/items_grouped")
+def get_items_grouped():
+    state = request.args.get("state")
+    craving = request.args.get("craving")
+    if state is None or craving is None:
+        return failure_response("State or Craving not provided!")
+    valid_restaurants = Restaurant.query.filter_by(state=state).all()
+    valid_menu_items = [
+        (item, restaurant.score) for restaurant in valid_restaurants for item in restaurant.items]
+    if len(valid_menu_items) == 0:
+        return success_response({"items": []})
+    similar_menu_items = get_menu_items_recommendations(
+        craving, valid_menu_items)
+
+    res = {"restaurants":{}}
+    for item in similar_menu_items:
+        restaurant_name = item.serialize()["restaurant"]["name"]
+        if restaurant_name not in res["restaurants"]:
+            res["restaurants"][restaurant_name] = {"info": (Restaurant.query.filter_by(id=item.restaurant_id).first()).rep(), "items" : []}
+        res["restaurants"][restaurant_name]["items"].append(item.rep())
+    return success_response(res)
     
 """
 Takes in query parameters:
