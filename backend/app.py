@@ -209,13 +209,21 @@ def get_items_grouped():
     craving = request.args.get("craving")
     if state is None or craving is None:
         return failure_response("State or Craving not provided!")
-    valid_restaurants = Restaurant.query.filter_by(state=state).all()
-    valid_menu_items = [
-        (item, restaurant.score) for restaurant in valid_restaurants for item in restaurant.items]
-    if len(valid_menu_items) == 0:
-        return success_response({"items": []})
-    similar_menu_items = get_menu_items_recommendations(
-        craving, valid_menu_items)
+
+    similar_menu_items = get_items_from_states(craving, [state])
+
+    #If no similar items found in state, search for items in neighboring states
+    if len(similar_menu_items) == 0: 
+        region_states = get_neighboring_states(state)
+        similar_menu_items = get_items_from_states(craving, region_states)
+
+    # valid_restaurants = Restaurant.query.filter_by(state=state).all()
+    # valid_menu_items = [
+    #     (item, restaurant.score) for restaurant in valid_restaurants for item in restaurant.items]
+    # if len(valid_menu_items) == 0:
+    #     return success_response({"items": []})
+    # similar_menu_items = get_menu_items_recommendations(
+    #     craving, valid_menu_items)
 
     res = {"restaurants":{}}
     for item in similar_menu_items:
