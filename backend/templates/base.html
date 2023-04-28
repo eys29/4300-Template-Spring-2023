@@ -90,7 +90,8 @@
               item.restaurant.ratings,
               item.restaurant.price_range,
               item.description,
-              item.price
+              item.price,
+              item.restaurant.category
             );
             document.getElementById("answer-box").appendChild(tempDiv);
           });
@@ -106,7 +107,8 @@
       rating,
       price,
       item_description,
-      item_price
+      item_price,
+      rest_categories
     ) {
       function setEmptyIfNone(txt) {
         return txt === undefined || txt.length === 0 || txt === "None"
@@ -142,6 +144,9 @@
 
                 <p class='episode-desc'><b>Restaurant:</b> ${setEmptyIfNone(
                   rest_name
+                )}</p>
+                <p class='episode-desc'><b>Restaurant Categories:</b> ${commaSeparateCuisineTypes(
+                  setEmptyIfNone(rest_categories)
                 )}</p>
                 <p class='episode-desc'> <b>Address:</b> ${setEmptyIfNone(
                   address
