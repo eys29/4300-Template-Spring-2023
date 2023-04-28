@@ -83,13 +83,14 @@
             let tempDiv = document.createElement("div");
             tempDiv.innerHTML = answerBoxTemplate(
               item.name,
-              item.restaurant.category,
+              item.category,
               item.restaurant.name,
               item.restaurant.full_address,
               item.restaurant.score,
               item.restaurant.ratings,
               item.restaurant.price_range,
-              item.description
+              item.description,
+              item.price
             );
             document.getElementById("answer-box").appendChild(tempDiv);
           });
@@ -104,7 +105,8 @@
       score,
       rating,
       price,
-      item_description
+      item_description,
+      item_price
     ) {
       function setEmptyIfNone(txt) {
         return txt === undefined || txt.length === 0 || txt === "None"
@@ -128,10 +130,16 @@
                 <h3 class='episode-title'>${setEmptyIfNone(item_name)}</h3>
                 <h4 class='episode-title'> <b>Item Description:</b> ${setEmptyIfNone(
                   item_description
-                )}</h2>
-                <p class='episode-title'> <b>Cuisine Categories:</b> ${commaSeparateCuisineTypes(
+                )}</h4>
+                <h4 class='episode-title'> <b>Item Cost:</b> ${setEmptyIfNone(
+                  item_price
+                )}</h4>
+                <p class='episode-title'> <b>Cuisine Category:</b> ${commaSeparateCuisineTypes(
                   setEmptyIfNone(category)
                 )}</p>
+                
+                ------------------ 
+
                 <p class='episode-desc'><b>Restaurant:</b> ${setEmptyIfNone(
                   rest_name
                 )}</p>
@@ -141,7 +149,7 @@
                 <p class='other-info'><b>Average rating:</b> ${setEmptyIfNone(
                   score
                 )} | <b>Number of ratings:</b> ${setEmptyIfNone(rating)}</p>
-                <p class='other-info'><b>Price Range:</b> ${convertPriceToText(
+                <p class='other-info'><b>Restaurant Price Range:</b> ${convertPriceToText(
                   setEmptyIfNone(price)
                 )}</p>
             </div>`;
