@@ -118,7 +118,7 @@
 
       function commaSeparateCuisineTypes(txt) {
         let x = txt.split(" ");
-        return x.join(", ");
+        return x.filter(Boolean).join(", ");
       }
 
       function convertPriceToText(txt) {
