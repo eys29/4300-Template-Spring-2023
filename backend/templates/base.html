@@ -31,20 +31,20 @@
             <!-- w3schools drop down -->
 
             <div class="scroll-box" id="scroll-box">
-                <form class="form-1 user">
-                    <!-- <label id="country-label" class="user-field" for="country">Search for a state</label>
+              <form class="form-1 user">
+                <!-- <label id="country-label" class="user-field" for="country">Search for a state</label>
                                     <input  onkeyup="filterText()"> -->
-                    <input
-                      placeholder="Search for a state"
-                      list="datalist"
-                      id="country-input"
-                      type="text"
-                      onkeyup="statelist(this.value)"
-                    />
-                    <datalist class="user-field" id="datalist"></datalist>
-                    <!-- <button class="user-field" id="submit-country" type="submit" value="Submit">Submit
+                <input
+                  placeholder="Search for a state"
+                  list="datalist"
+                  id="country-input"
+                  type="text"
+                  onkeyup="statelist(this.value)"
+                />
+                <datalist class="user-field" id="datalist"></datalist>
+                <!-- <button class="user-field" id="submit-country" type="submit" value="Submit">Submit
                                     </button> -->
-                  </form>
+              </form>
             </div>
           </div>
         </div>
@@ -73,7 +73,9 @@
         .then((value) => {
           if (value.items.length === 0) {
             let tempDiv = document.createElement("div");
-            tempDiv.innerHTML = answerBoxTemplate("No Items Found", "", "");
+            tempDiv.innerHTML = `<div class='answer'>
+                <h3 class='episode-title'> No Items Found </h3>
+            </div>`;
             document.getElementById("answer-box").appendChild(tempDiv);
           }
           value.items.forEach((item) => {
@@ -86,20 +88,62 @@
               item.restaurant.full_address,
               item.restaurant.score,
               item.restaurant.ratings,
-              item.restaurant.price_range
+              item.restaurant.price_range,
+              item.description
             );
             document.getElementById("answer-box").appendChild(tempDiv);
           });
         });
     }
 
-    function answerBoxTemplate(item_name, category, item_desc, address, score, rating, price) {
+    function answerBoxTemplate(
+      item_name,
+      category,
+      rest_name,
+      address,
+      score,
+      rating,
+      price,
+      item_description
+    ) {
+      function setEmptyIfNone(txt) {
+        return txt === undefined || txt.length === 0 || txt === "None"
+          ? "-"
+          : txt;
+      }
+
+      function commaSeparateCuisineTypes(txt) {
+        let x = txt.split(" ");
+        return x.join(", ");
+      }
+
+      function convertPriceToText(txt) {
+        if (price === "$") return "Cheap ($)";
+        else if (price === "$$") return "Medium ($$)";
+        else if (price === "$$$") return "Pricey ($$$)";
+        else return "Expensive ($$$$)";
+      }
+
       return `<div class='answer'>
-                <h3 class='episode-title'>${item_name}</h3>
-                <p class='episode-title'> <b>Cuisine Type:</b> ${category}</p>
-                <p class='episode-desc'><b>Restaurant:</b> ${item_desc}</p>
-                <p class='episode-desc'> <b>Address:</b> ${address}</p>
-                <p class='other-info'><b>Average rating:</b> ${score}  <b>Number of ratings:</b> ${rating} <b>Price:</b> ${price}</p>
+                <h3 class='episode-title'>${setEmptyIfNone(item_name)}</h3>
+                <h4 class='episode-title'> <b>Item Description:</b> ${setEmptyIfNone(
+                  item_description
+                )}</h2>
+                <p class='episode-title'> <b>Cuisine Categories:</b> ${commaSeparateCuisineTypes(
+                  setEmptyIfNone(category)
+                )}</p>
+                <p class='episode-desc'><b>Restaurant:</b> ${setEmptyIfNone(
+                  rest_name
+                )}</p>
+                <p class='episode-desc'> <b>Address:</b> ${setEmptyIfNone(
+                  address
+                )}</p>
+                <p class='other-info'><b>Average rating:</b> ${setEmptyIfNone(
+                  score
+                )} | <b>Number of ratings:</b> ${setEmptyIfNone(rating)}</p>
+                <p class='other-info'><b>Price Range:</b> ${convertPriceToText(
+                  setEmptyIfNone(price)
+                )}</p>
             </div>`;
     }
 
