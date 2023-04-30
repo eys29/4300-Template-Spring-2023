@@ -145,15 +145,22 @@ def get_items():
         similar_items = get_items_from_states(craving, region_states)
 
     # TODO: Use this information    
-    for output_item, svd_cossim in similar_items:
-        items_most_sim_to_top_eigenvec, eigenvec_cossim = test_sim(craving, output_item[0])
-        print(items_most_sim_to_top_eigenvec)
-        print(eigenvec_cossim) # probably don't need to use this value, it's not particularly useful
-        print(svd_cossim)
+    # for output_item, svd_cossim in similar_items:
+    #     items_most_sim_to_top_eigenvec, eigenvec_cossim = test_sim(craving, output_item[0])
+    #     print(items_most_sim_to_top_eigenvec)
+    #     print(eigenvec_cossim) # probably don't need to use this value, it's not particularly useful
+    #     print(svd_cossim)
         
-        
+    res = {"items": []}
+    for (item, rating), csim in similar_items:
+        tmp = item.serialize()
+        tmp["cossimSVD"] = csim.item()
+        items_most_sim_to_top_eigenvec, eigenvec_cossim = test_sim(craving, item)
+        tmp['cossimEigen'] = eigenvec_cossim.item()
+        tmp['eigenItems'] = items_most_sim_to_top_eigenvec
+        res["items"].append(tmp)
 
-    return success_response({"items": [item.serialize() for (item, rating), csim in similar_items]})
+    return success_response(res)
 
 def get_items_from_states(craving, states): 
     valid_restaurants = [
