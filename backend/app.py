@@ -12,6 +12,12 @@ from db import Restaurant, MenuItems
 from similarity import get_menu_items_recommendations, edit_distance
 from location import get_neighboring_states, get_all_states
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.decomposition import TruncatedSVD
+import numpy as np
+
+
 load_dotenv()
 
 
@@ -47,6 +53,47 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 CORS(app)
+
+with app.app_context():
+    valid_restaurants = [
+        restaurant
+        for state in get_all_states()
+        for restaurant in Restaurant.query.filter_by(state=state).all() 
+    ]
+    valid_menu_items = [
+        item
+        for restaurant in valid_restaurants 
+        for item in restaurant.items
+    ]
+    vectorizer = TfidfVectorizer()
+    menu_items_str = [item.str_rep() for item in valid_menu_items]
+    tfidf = vectorizer.fit_transform(menu_items_str)
+    svd = TruncatedSVD(n_components=40)
+    svd_docs = svd.fit_transform(tfidf)
+    res = {}
+    for i in range(10):
+        print('dimension ' + str(i))
+        res[i] = []
+        sims = cosine_similarity(tfidf, svd.components_[i].reshape(1, -1)).flatten()
+        indices = np.argsort(sims)[::-1]
+        for j in range(5):
+            print(valid_menu_items[indices[j]].rep())
+            res[i].append(valid_menu_items[indices[j]].rep())
+        
+        print()
+
+def test_sim(query, input_item):
+    query_vector = vectorizer.transform([query])
+    output_item = vectorizer.transform([input_item.str_rep()])
+    sims = cosine_similarity(query_vector, svd.components_[:10]).flatten()
+    indices = np.argsort(sims)[::-1]
+    max_ind = indices[0]
+    # print(max_ind)
+    # print(res[max_ind])
+    output_sim = cosine_similarity(output_item, svd.components_[max_ind].reshape(1, -1)).flatten()
+    # print(output_sim)
+    
+    return res[max_ind], output_sim
 
 # Sample search, the LIKE operator in this case is hard-coded,
 # but if you decide to use SQLAlchemy ORM framework,
@@ -96,8 +143,17 @@ def get_items():
     if len(similar_items) == 0: 
         region_states = get_neighboring_states(state)
         similar_items = get_items_from_states(craving, region_states)
-    
-    return success_response({"items": [item.serialize() for item in similar_items]})
+
+    # TODO: Use this information    
+    for output_item, svd_cossim in similar_items:
+        items_most_sim_to_top_eigenvec, eigenvec_cossim = test_sim(craving, output_item[0])
+        print(items_most_sim_to_top_eigenvec)
+        print(eigenvec_cossim) # probably don't need to use this value, it's not particularly useful
+        print(svd_cossim)
+        
+        
+
+    return success_response({"items": [item.serialize() for (item, rating), csim in similar_items]})
 
 def get_items_from_states(craving, states): 
     valid_restaurants = [
@@ -110,7 +166,6 @@ def get_items_from_states(craving, states):
         for restaurant in valid_restaurants 
         for item in restaurant.items
     ]
-    print(len(valid_menu_items))
     similar_menu_items = get_menu_items_recommendations(
         craving, valid_menu_items
     )
@@ -249,4 +304,5 @@ def get_restaurant():
     return success_response({"restaurant": restaurant.serialize()})
 
 
-# app.run(debug=True)
+
+app.run(debug=True)
