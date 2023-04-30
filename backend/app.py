@@ -82,6 +82,19 @@ with app.app_context():
         
         print()
 
+    EIGENVEC_KEYS = [
+        'Cooked meat/vegetable entree in bread',
+        'Sides',
+        'Halal food',
+        'Sushi',
+        'Chicken sandwiches',
+        'Savoriness',
+        'Fried rice',
+        'Diner items',
+        'Combo meals',
+        'Wings'
+    ]
+
 def test_sim(query, input_item):
     query_vector = vectorizer.transform([query])
     output_item = vectorizer.transform([input_item.str_rep()])
@@ -93,7 +106,7 @@ def test_sim(query, input_item):
     output_sim = cosine_similarity(output_item, svd.components_[max_ind].reshape(1, -1)).flatten()
     # print(output_sim)
     
-    return res[max_ind], output_sim
+    return res[max_ind], output_sim, EIGENVEC_KEYS[max_ind]
 
 # Sample search, the LIKE operator in this case is hard-coded,
 # but if you decide to use SQLAlchemy ORM framework,
@@ -155,9 +168,10 @@ def get_items():
     for (item, rating), csim in similar_items:
         tmp = item.serialize()
         tmp["cossimSVD"] = csim.item()
-        items_most_sim_to_top_eigenvec, eigenvec_cossim = test_sim(craving, item)
+        items_most_sim_to_top_eigenvec, eigenvec_cossim, eigenkey = test_sim(craving, item)
         tmp['cossimEigen'] = eigenvec_cossim.item()
-        tmp['eigenItems'] = items_most_sim_to_top_eigenvec
+        # tmp['eigenItems'] = items_most_sim_to_top_eigenvec
+        tmp['svd_concept'] = eigenkey
         res["items"].append(tmp)
 
     return success_response(res)
