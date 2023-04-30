@@ -110,6 +110,7 @@ def get_items_from_states(craving, states):
         for restaurant in valid_restaurants 
         for item in restaurant.items
     ]
+    print(len(valid_menu_items))
     similar_menu_items = get_menu_items_recommendations(
         craving, valid_menu_items
     )
@@ -248,4 +249,4 @@ def get_restaurant():
     return success_response({"restaurant": restaurant.serialize()})
 
 
-# app.run(debug=True)
+app.run(debug=True)
