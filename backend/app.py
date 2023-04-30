@@ -249,4 +249,4 @@ def get_restaurant():
     return success_response({"restaurant": restaurant.serialize()})
 
 
-app.run(debug=True)
+# app.run(debug=True)
