@@ -1,5 +1,9 @@
 /* @colorfood- = #ac9200 */
 
+body {
+  background: linear-gradient(113.12deg, #FFFEDE 0.63%, #FFFFFF 99.15%);
+}
+
 .full-body-container {
   position: absolute;
   top: 0;
@@ -23,6 +27,40 @@
   gap: 10px;
 
   width: 300px;
+}
+
+.info-box-all {
+  border-radius: 50px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  padding: 3%;
+  margin: 3%;
+}
+
+.information-box-top{
+  /* border: #ac9200;
+  border-radius: ; */
+  /* border-radius: 50px; */
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+  
+  /* padding: 3%; */
+  /* margin: 3%; */
+}
+
+.information-box{
+  /* border: #ac9200;
+  border-radius: ; */
+  /* border-radius: 50px; */
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  /* padding: 3%; */
+  margin: 3%;
+  width: 35%;
 }
 
 .input-box-searches {

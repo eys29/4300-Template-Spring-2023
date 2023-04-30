@@ -129,6 +129,8 @@
       }
 
       return `<div class='answer'>
+        <div class = "info-box-all"> 
+        <div class = "information-box-top"> 
                 <h3 class='episode-title'>${setEmptyIfNone(item_name)}</h3>
                 <h4 class='episode-title'> <b>Item Description:</b> ${setEmptyIfNone(
                   item_description
@@ -139,9 +141,8 @@
                 <p class='episode-title'> <b>Cuisine Category:</b> ${commaSeparateCuisineTypes(
                   setEmptyIfNone(category)
                 )}</p>
-                
-                ------------------ 
-
+              </div>
+                <div class = "information-box"> 
                 <p class='episode-desc'><b>Restaurant:</b> ${setEmptyIfNone(
                   rest_name
                 )}</p>
@@ -157,6 +158,8 @@
                 <p class='other-info'><b>Restaurant Price Range:</b> ${convertPriceToText(
                   setEmptyIfNone(price)
                 )}</p>
+                </div>
+              </div>
             </div>`;
     }
 
