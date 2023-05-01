@@ -188,7 +188,7 @@ def get_items_from_states(craving, states):
         for item in restaurant.items
     ]
     similar_menu_items = get_menu_items_recommendations(
-        craving, valid_menu_items
+        craving, valid_menu_items, vectorizer, svd
     )
     return similar_menu_items
 
@@ -326,4 +326,4 @@ def get_restaurant():
 
 
 
-# app.run(debug=True)
+app.run(debug=True)
