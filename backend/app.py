@@ -83,16 +83,16 @@ with app.app_context():
         print()
 
     EIGENVEC_KEYS = [
-        'Cooked meat/vegetable entree in bread',
-        'Sides',
-        'Halal food',
+        'Comfort food',
+        'American food',
+        'Halal and Middle Eastern food',
+        'Chicken-like dishes',
         'Sushi',
-        'Chicken sandwiches',
-        'Savoriness',
-        'Fried rice',
-        'Diner items',
-        'Combo meals',
-        'Wings'
+        'Fries/Sides',
+        'Japanese meat dishes',
+        'Pizza',
+        'Dairy',
+        'Burger-adjacent'
     ]
 
 def test_sim(query, input_item):
