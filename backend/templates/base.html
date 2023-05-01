@@ -134,6 +134,8 @@
     }
 
     function searchRequest() {
+      document.getElementById("rank").style.color = "black";
+      document.getElementById("sim").style.color = "black";
       document.getElementById("answer-box").innerHTML = "";
       craving = document.getElementById("filter-text-val").value;
       console.log(craving);
@@ -154,23 +156,7 @@
             </div>`;
             document.getElementById("answer-box").appendChild(tempDiv);
           }
-          value.items.forEach((item) => {
-            let tempDiv = document.createElement("div");
-            tempDiv.innerHTML = answerBoxTemplate(
-              item.name,
-              item.restaurant.name,
-              item.restaurant.full_address,
-              item.restaurant.score,
-              item.restaurant.ratings,
-              item.restaurant.price_range,
-              item.description,
-              item.price,
-              item.restaurant.category,
-              item.cossimSVD,
-              item.svd_concept
-            );
-            document.getElementById("answer-box").appendChild(tempDiv);
-          });
+          addCards(value.items);
         });
     }
 
