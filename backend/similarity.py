@@ -28,13 +28,12 @@ def edit_distance(query, message):
     return edit_matrix[m-1][n-1]
 
 
-def get_menu_items_recommendations(query, menu_items, limit=10, sim_threshold=0.35):
+def get_menu_items_recommendations(query, menu_items, vectorizer, svd, 
+                                   limit=10, sim_threshold=0.35):
     if len(menu_items) == 0: return []
-    vectorizer = TfidfVectorizer()
     menu_items_str = [item[0].str_rep() for item in menu_items]
-    tfidf = vectorizer.fit_transform(menu_items_str)
-    svd = TruncatedSVD(n_components=40)
-    svd_docs = svd.fit_transform(tfidf)
+    tfidf = vectorizer.transform(menu_items_str)
+    svd_docs = svd.transform(tfidf)
     query_tfidf = vectorizer.transform([query])
     query_vec = svd.transform(query_tfidf)
     sims = cosine_similarity(query_vec, svd_docs).flatten()
