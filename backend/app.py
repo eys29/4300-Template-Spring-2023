@@ -76,7 +76,7 @@ with app.app_context():
         res[i] = []
         sims = cosine_similarity(tfidf, svd.components_[i].reshape(1, -1)).flatten()
         indices = np.argsort(sims)[::-1]
-        for j in range(5):
+        for j in range(10):
             print(valid_menu_items[indices[j]].rep())
             res[i].append(valid_menu_items[indices[j]].rep())
         
@@ -86,13 +86,13 @@ with app.app_context():
         'Comfort food',
         'American food',
         'Halal and Middle Eastern food',
-        'Chicken-like dishes',
-        'Sushi',
+        'Chicken/Sandwiches',
+        'Fish/Sushi',
         'Fries/Sides',
-        'Japanese meat dishes',
+        'Japanese',
         'Pizza',
         'Dairy',
-        'Burger-adjacent'
+        'Meat'
     ]
 
 def test_sim(query, input_item):
@@ -192,93 +192,6 @@ def get_items_from_states(craving, states):
     )
     return similar_menu_items
 
-
-"""
-"restaurants": {
-    "Band W Philly Steaks": {
-        "info": {
-            "id": 193,
-            "position": 23,
-            "name": "Band W Philly Steaks",
-            "score": "4.7",
-            "ratings": "30.0",
-            "category": "Salads American Seafood Sandwich Wings",
-            "price_range": "$$",
-            "full_address": "707 Richard Arrington Junior Boulevard South, 103B, Birmingham, AL, 35233",
-            "zip_code": 35233,
-            "lat": 33.5083,
-            "lng": -86.8004,
-            "state": "Alabama"
-        },
-        "items": [
-            {
-                "restaurant_id": 193,
-                "category": "Gourmet Fries",
-                "name": "Ultimate Fries",
-                "description": "None",
-                "price": "4.99 USD"
-            },
-            {
-                "restaurant_id": 193,
-                "category": "Gourmet Fries",
-                "name": "Original Fries",
-                "description": "None",
-                "price": "2.79 USD"
-            }
-        ]
-    },
-    "IHOP 2000 Pelham Parkway": {
-        "info": {
-            "id": 466,
-            "position": 12,
-            "name": "IHOP 2000 Pelham Parkway",
-            "score": "4.6",
-            "ratings": "38.0",
-            "category": "American Breakfast and Brunch burger Comfort Food Dinner Omelette salad Traditional American Family Meals",
-            "price_range": "$",
-            "full_address": "2000, Pelham, AL, 35244",
-            "zip_code": 35244,
-            "lat": 33.344568,
-            "lng": -86.7966864,
-            "state": "Alabama"
-        },
-        "items": [
-            {
-                "restaurant_id": 466,
-                "category": "GlutenFriendly",
-                "name": "French Fries",
-                "description": "GlutenFriendly",
-                "price": "3.0 USD"
-            }
-        ]
-    },
-    "Dreamland BBQ Birmingham": {
-        "info": {
-            "id": 221,
-            "position": 4,
-            "name": "Dreamland BBQ Birmingham",
-            "score": "4.5",
-            "ratings": "100.0",
-            "category": "BBQ Burgers Salads Healthy Family Friendly",
-            "price_range": "$",
-            "full_address": "1427 14th Ave S, Birmingham, AL, 35205",
-            "zip_code": 35205,
-            "lat": 33.4939991,
-            "lng": -86.802659,
-            "state": "Alabama"
-        },
-        "items": [
-            {
-                "restaurant_id": 221,
-                "category": "FIXINS",
-                "name": "FRENCH FRIES",
-                "description": "Choose between a small or large basket of french fries",
-                "price": "3.49 USD"
-            }
-        ]
-    }, ...
-}
-"""
 
 @app.route("/items_grouped")
 def get_items_grouped():
