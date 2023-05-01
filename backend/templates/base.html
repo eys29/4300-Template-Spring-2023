@@ -118,7 +118,6 @@
         let tempDiv = document.createElement("div");
         tempDiv.innerHTML = answerBoxTemplate(
           item.name,
-          item.category,
           item.restaurant.name,
           item.restaurant.full_address,
           item.restaurant.score,
@@ -127,7 +126,8 @@
           item.description,
           item.price,
           item.restaurant.category,
-          item.cossimSVD
+          item.cossimSVD,
+          item.svd_concept
         );
         document.getElementById("answer-box").appendChild(tempDiv);
       });
