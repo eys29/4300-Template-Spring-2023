@@ -55,7 +55,7 @@
       </div>
 
       <div class="sortby">
-        <p>Sort results by:</p>
+        <p class="other-info">Sort results by:</p>
         <button id="rank" type="button" onclick="sortbyrank()">
           Restaurant ranking
         </button>
@@ -156,7 +156,7 @@
             </div>`;
             document.getElementById("answer-box").appendChild(tempDiv);
           }
-          addCards(value.items)
+          addCards(value.items);
         });
     }
 
