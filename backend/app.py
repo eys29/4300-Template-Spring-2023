@@ -171,7 +171,7 @@ def get_items():
         items_most_sim_to_top_eigenvec, eigenvec_cossim, eigenkey = test_sim(craving, item)
         tmp['cossimEigen'] = eigenvec_cossim.item()
         # tmp['eigenItems'] = items_most_sim_to_top_eigenvec
-        tmp['svd_concept'] = eigenkey + ' (' + str(round(tmp['cossimEigen']), 3) + ')'
+        tmp['svd_concept'] = eigenkey + ' (' + str(round(tmp['cossimEigen'], 3)) + ')'
         res["items"].append(tmp)
 
     return success_response(res)
