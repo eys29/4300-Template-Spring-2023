@@ -56,10 +56,13 @@
 
       <div class="sortby">
         <p>Sort results by:</p>
-        <button id="rank" type="button" onclick="sortbyrank()">Restaurant ranking</button>
-        <button id="sim" type="button" onclick="sortbysim()">Similarity score</button>
+        <button id="rank" type="button" onclick="sortbyrank()">
+          Restaurant ranking
+        </button>
+        <button id="sim" type="button" onclick="sortbysim()">
+          Similarity score
+        </button>
       </div>
-
     </div>
     <div id="answer-box"></div>
   </div>
@@ -68,26 +71,25 @@
     let results = [];
 
     function comparerank(a, b) {
-
-      a = parseFloat(a.restaurant.score)
-      a = isNaN(a) ? 0 : a
-      b = parseFloat(b.restaurant.score)
-      b = isNaN(b) ? 0 : b
-      return b-a
+      a = parseFloat(a.restaurant.score);
+      a = isNaN(a) ? 0 : a;
+      b = parseFloat(b.restaurant.score);
+      b = isNaN(b) ? 0 : b;
+      return b - a;
     }
 
-    function comparesim(a,b) {
-      a = parseFloat(a.cossimSVD)
-      a = isNaN(a) ? 0 : a
-      b = parseFloat(b.cossimSVD)
-      b = isNaN(b) ? 0 : b
-      return b-a
+    function comparesim(a, b) {
+      a = parseFloat(a.cossimSVD);
+      a = isNaN(a) ? 0 : a;
+      b = parseFloat(b.cossimSVD);
+      b = isNaN(b) ? 0 : b;
+      return b - a;
     }
 
     function sortbyrank() {
-      document.getElementById("rank").style.color = "green"
-      document.getElementById("sim").style.color = "black"
-      const list = document.getElementById("answer-box")
+      document.getElementById("rank").style.color = "green";
+      document.getElementById("sim").style.color = "black";
+      const list = document.getElementById("answer-box");
 
       while (list.hasChildNodes()) {
         list.removeChild(list.firstChild);
@@ -98,9 +100,9 @@
     }
 
     function sortbysim() {
-      document.getElementById("rank").style.color = "black"
-      document.getElementById("sim").style.color = "green"
-      const list = document.getElementById("answer-box")
+      document.getElementById("rank").style.color = "black";
+      document.getElementById("sim").style.color = "green";
+      const list = document.getElementById("answer-box");
 
       while (list.hasChildNodes()) {
         list.removeChild(list.firstChild);
@@ -124,7 +126,7 @@
           item.restaurant.price_range,
           item.description,
           item.price,
-          item.restaurant.category, 
+          item.restaurant.category,
           item.cossimSVD
         );
         document.getElementById("answer-box").appendChild(tempDiv);
@@ -156,7 +158,6 @@
             let tempDiv = document.createElement("div");
             tempDiv.innerHTML = answerBoxTemplate(
               item.name,
-              item.category,
               item.restaurant.name,
               item.restaurant.full_address,
               item.restaurant.score,
@@ -164,18 +165,17 @@
               item.restaurant.price_range,
               item.description,
               item.price,
-              item.restaurant.category, 
-              item.cossimSVD
+              item.restaurant.category,
+              item.cossimSVD,
+              item.svd_concept
             );
             document.getElementById("answer-box").appendChild(tempDiv);
           });
-          
         });
     }
 
     function answerBoxTemplate(
       item_name,
-      category,
       rest_name,
       address,
       score,
@@ -184,7 +184,8 @@
       item_description,
       item_price,
       rest_categories,
-      sim
+      sim,
+      concept
     ) {
       function setEmptyIfNone(txt) {
         return txt === undefined || txt.length === 0 || txt === "None"
@@ -214,8 +215,11 @@
                 <h4 class='episode-title'> <b>Item Cost:</b> ${setEmptyIfNone(
                   item_price
                 )}</h4>
-                <p class='episode-title'> <b>Cuisine Category:</b> ${commaSeparateCuisineTypes(
-                  setEmptyIfNone(category)
+                <p class='other-info'><b>Cossine Similarity Score (SVD Space):</b> ${setEmptyIfNone(
+                  parseFloat(sim).toFixed(2)
+                )}</p>
+                <p class='other-info'><b>Most Relevant SVD Dimension:</b> ${setEmptyIfNone(
+                  concept
                 )}</p>
               </div>
                 <div class = "information-box"> 
@@ -233,9 +237,6 @@
                 )} | <b>Number of ratings:</b> ${setEmptyIfNone(rating)}</p>
                 <p class='other-info'><b>Restaurant Price Range:</b> ${convertPriceToText(
                   setEmptyIfNone(price)
-                )}</p>
-                <p class='other-info'><b>Cossine similarity score:</b> ${setEmptyIfNone(
-                  parseFloat(sim).toFixed(2)
                 )}</p>
                 </div>
               </div>

@@ -79,7 +79,7 @@ class MenuItems(db.Model):
         "Restaurant", back_populates="items")
 
     def str_rep(self):
-        elements = [self.category, self.name, self.description]
+        elements = [self.name, self.description]
         str_item = " ".join(elem for elem in elements if elem is not None)
         return str_item
 
